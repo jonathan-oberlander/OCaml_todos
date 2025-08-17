@@ -3,43 +3,26 @@ type task =
   ; completed : bool
   }
 
-let todo_list = []
+let todo_list = List.[]
 
-let print_task t =
-  let status = if t.completed then "[x]" else "[ ]" in
-  Printf.printf "%s %s\n" status t.description
+let print_task index task =
+  let status = if task.completed then "[x]" else "[ ]" in
+  Printf.printf "%d. %s %s\n" index status task.description
 ;;
 
-let print_all_tasks tasks =
-  let rec aux idx tasks =
-    match tasks with
-    | [] -> ()
-    | t :: rest ->
-      let status = if t.completed then "[x]" else "[ ]" in
-      Printf.printf "%d. %s %s\n" (idx + 1) status t.description;
-      aux (idx + 1) rest
-  in
-  aux 0 tasks
+let print_all_tasks todo_list =
+  List.iteri (fun i task -> print_task (i + 1) task) todo_list
 ;;
 
 let add_task tasks description =
   let new_task = { description; completed = false } in
-  new_task :: tasks
+  List.cons new_task tasks
 ;;
 
-let rec delete_task tasks index =
-  match tasks with
-  | [] -> []
-  | t :: rest -> if index = 0 then rest else t :: delete_task rest (index - 1)
-;;
+let delete_task tasks idx = List.filteri (fun i _ -> i <> idx) tasks
 
-let rec mark_completed tasks index =
-  match tasks with
-  | [] -> []
-  | t :: rest ->
-    if index = 0
-    then { t with completed = true } :: rest
-    else t :: mark_completed rest (index - 1)
+let mark_completed tasks idx =
+  List.mapi (fun i task -> if i = idx then { task with completed = true } else task) tasks
 ;;
 
 let rec main_loop todo_list =
