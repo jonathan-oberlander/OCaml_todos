@@ -1,0 +1,6 @@
+{
+  "ocaml.sandbox": {
+    "kind": "opam",
+    "switch": "${workspaceFolder:first_dune_project}"
+  }
+}

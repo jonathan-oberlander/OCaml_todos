@@ -1,0 +1,4 @@
+(executable
+ (public_name first_dune_project)
+ (name main)
+ (libraries opium))
